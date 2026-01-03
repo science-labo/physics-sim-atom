@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周期表パズル H〜Ca</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(18, 40px); grid-template-rows: repeat(4, 50px); gap: 5px; margin-top: 20px; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .slot { border: 1px dashed #ccc; background: #fafafa; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #aaa; position: relative; }
+        .slot.filled { border-style: solid; color: white; }
+        .element { width: 40px; height: 50px; background: #007bff; color: white; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: grab; font-weight: bold; font-size: 14px; position: absolute; z-index: 10; }
+        .inventory { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 8px; max-width: 800px; justify-content: center; background: #eee; padding: 20px; border-radius: 10px; }
+        .number { font-size: 10px; }
+        #message { margin-top: 20px; font-size: 24px; font-weight: bold; color: #28a745; height: 30px; }
+    </style>
+</head>
+<body>
+
+    <h1>🧩 周期表パズル (1-20)</h1>
+    <p>下の原子を正しい場所にドラッグしてね！</p>
+
+    <div id="grid" class="grid"></div>
+    <div id="message"></div>
+    <div id="inventory" class="inventory"></div>
+
+    <script>
+        const elements = [
+            {n: 1, s: "H", r: 1, c: 1}, {n: 2, s: "He", r: 1, c: 18},
+            {n: 3, s: "Li", r: 2, c: 1}, {n: 4, s: "Be", r: 2, c: 2}, {n: 5, s: "B", r: 2, c: 13}, {n: 6, s: "C", r: 2, c: 14}, {n: 7, s: "N", r: 2, c: 15}, {n: 8, s: "O", r: 2, c: 16}, {n: 9, s: "F", r: 2, c: 17}, {n: 10, s: "Ne", r: 2, c: 18},
+            {n: 11, s: "Na", r: 3, c: 1}, {n: 12, s: "Mg", r: 3, c: 2}, {n: 13, s: "Al", r: 3, c: 13}, {n: 14, s: "Si", r: 3, c: 14}, {n: 15, s: "P", r: 3, c: 15}, {n: 16, s: "S", r: 3, c: 16}, {n: 17, s: "Cl", r: 3, c: 17}, {n: 18, s: "Ar", r: 3, c: 18},
+            {n: 19, s: "K", r: 4, c: 1}, {n: 20, s: "Ca", r: 4, c: 2}
+        ];
+
+        let finishedCount = 0;
+
+        // 枠を作成
+        const grid = document.getElementById('grid');
+        for (let r = 1; r <= 4; r++) {
+            for (let c = 1; c <= 18; c++) {
+                const slot = document.createElement('div');
+                slot.className = 'slot';
+                slot.dataset.r = r;
+                slot.dataset.c = c;
+                // 特定の場所に番号ヒントを表示
+                const el = elements.find(e => e.r === r && e.c === c);
+                if (el) slot.innerText = el.n;
+                grid.appendChild(slot);
+            }
+        }
+
+        // 原子カードをシャッフルして作成
+        const inventory = document.getElementById('inventory');
+        [...elements].sort(() => Math.random() - 0.5).forEach(el => {
+            const card = document.createElement('div');
+            card.className = 'element';
+            card.innerText = el.s;
+            card.draggable = true;
+            card.id = `el-${el.n}`;
+            
+            const numSpan = document.createElement('span');
+            numSpan.className = 'number';
+            numSpan.innerText = el.n;
+            card.prepend(numSpan);
+
+            card.ondragstart = (e) => e.dataTransfer.setData('text', el.n);
+            inventory.appendChild(card);
+        });
+
+        // ドロップ処理
+        document.querySelectorAll('.slot').forEach(slot => {
+            slot.ondragover = (e) => e.preventDefault();
+            slot.ondrop = (e) => {
+                const n = parseInt(e.dataTransfer.getData('text'));
+                const targetEl = elements.find(item => item.n === n);
+                
+                if (slot.dataset.r == targetEl.r && slot.dataset.c == targetEl.c) {
+                    const card = document.getElementById(`el-${n}`);
+                    slot.appendChild(card);
+                    card.draggable = false;
+                    card.style.cursor = 'default';
+                    card.style.position = 'static';
+                    slot.classList.add('filled');
+                    finishedCount++;
+                    if (finishedCount === elements.length) {
+                        document.getElementById('message').innerText = "🎊 周期表マスター！ 🎊";
+                    }
+                }
+            };
+        });
+    </script>
+</body>
+</html>
