@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周期表パズル - 元素を学ぼう！</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 周期表パズル</h1>
+            <p>元素記号をドラッグして正しい位置にはめ込もう！</p>
+        </header>
+
+        <div class="game-info">
+            <div class="score-board">
+                <span class="label">正解数:</span>
+                <span id="score">0</span>
+                <span class="label">/ 20</span>
+            </div>
+            <button id="resetBtn" class="btn-reset">リセット</button>
+        </div>
+
+        <div class="game-container">
+            <!-- 周期表のグリッド -->
+            <div class="periodic-table">
+                <!-- 1族 -->
+                <div class="element-slot" data-number="1" data-group="1" data-period="1"></div>
+                
+                <!-- 2族 -->
+                <div class="element-slot" data-number="3" data-group="1" data-period="2"></div>
+                <div class="element-slot" data-number="4" data-group="2" data-period="2"></div>
+                
+                <!-- 3族 -->
+                <div class="element-slot" data-number="11" data-group="1" data-period="3"></div>
+                <div class="element-slot" data-number="12" data-group="2" data-period="3"></div>
+                <div class="element-slot" data-number="13" data-group="13" data-period="3"></div>
+                <div class="element-slot" data-number="14" data-group="14" data-period="3"></div>
+                <div class="element-slot" data-number="15" data-group="15" data-period="3"></div>
+                <div class="element-slot" data-number="16" data-group="16" data-period="3"></div>
+                <div class="element-slot" data-number="17" data-group="17" data-period="3"></div>
+                <div class="element-slot" data-number="18" data-group="18" data-period="3"></div>
+                
+                <!-- 4族 -->
+                <div class="element-slot" data-number="19" data-group="1" data-period="4"></div>
+                <div class="element-slot" data-number="20" data-group="2" data-period="4"></div>
+
+                <!-- 右側の元素（2,5-10） -->
+                <div class="element-slot top-right" data-number="2" data-group="18" data-period="1"></div>
+                
+                <div class="element-slot" data-number="5" data-group="13" data-period="2"></div>
+                <div class="element-slot" data-number="6" data-group="14" data-period="2"></div>
+                <div class="element-slot" data-number="7" data-group="15" data-period="2"></div>
+                <div class="element-slot" data-number="8" data-group="16" data-period="2"></div>
+                <div class="element-slot" data-number="9" data-group="17" data-period="2"></div>
+                <div class="element-slot" data-number="10" data-group="18" data-period="2"></div>
+            </div>
+
+            <!-- ドラッグ可能な元素ブロック -->
+            <div class="elements-bank">
+                <h3>元素ブロック（ドラッグして配置しよう）</h3>
+                <div class="elements-container" id="elementsContainer">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>💡 遊び方</h3>
+            <ul>
+                <li>下の元素ブロックを上の周期表にドラッグ＆ドロップ</li>
+                <li>正しい位置に配置すると緑色に変わり、音が鳴ります</li>
+                <li>間違った位置に置くと元に戻ります</li>
+                <li>全ての元素を正しく配置してクリアを目指そう！</li>
+            </ul>
+        </div>
+
+        <div class="completion-message" id="completionMessage">
+            <div class="message-content">
+                <h2>🎉 おめでとう！</h2>
+                <p>すべての元素を正しく配置できました！</p>
+                <button id="playAgainBtn" class="btn-play-again">もう一度遊ぶ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/elements-data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
